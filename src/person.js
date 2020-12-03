@@ -1,3 +1,7 @@
+var R = require('ramda')
+var Address = require('./Address.js')
+var ZipCode = require('./ZipCode.js')
+
 class Person{
     constructor(firstname, lastname, ssn){
         this._firstname = firstname
@@ -74,15 +78,6 @@ class Student extends Person{
     }
 }
 
-class Address{
-    constructor(country){
-        this._country = country
-    }
-    get country(){
-        return this._country
-    }
-}
-
 const curry = new Student('Haskell', 'Curry', '111-11-1111', 'Penn State')
 curry.address = new Address('US')
 
@@ -108,3 +103,12 @@ let findStudentsBy = function(friends, selector){
 }
 
 console.log(findStudentsBy([curry, turing, church, kleene], selector('US', 'Princeton')))
+
+var person = new Person('Alonzo', 'Church', '444-44-4444')
+const lastnameLens = R.lensProp('lastname')
+console.log(R.view(lastnameLens, person))
+var newPerson = R.set(lastnameLens, 'Mourning', person)
+console.log(newPerson.lastname)
+console.log(person.lastname)
+
+person.address = new Address('US', 'NJ', 'Princeton', new ZipCode(08544, 1234), 'Alexander St.')
