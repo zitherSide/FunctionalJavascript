@@ -1,5 +1,5 @@
-var Person = require('./person')
-var Address = require('./Address')
+var Person = require('../person')
+var Address = require('../Address')
 var R = require('ramda')
 
 function PrintPeople(people, selector, printer){

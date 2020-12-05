@@ -19,6 +19,9 @@ module.exports = class Person{
         return this._lastname
     }
 
+    get fullname(){
+        return `${this._firstname} ${this._lastname}`
+    }
     get address(){
         return this._address
     }

@@ -1,5 +1,5 @@
-var Student = require('./Student.js')
-var Address = require('./Address.js')
+var Student = require('../Student.js')
+var Address = require('../Address.js')
 
 const curry = new Student('Haskell', 'Curry', '111-11-1111', 'Penn State')
 curry.address = new Address('US')

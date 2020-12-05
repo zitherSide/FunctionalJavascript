@@ -1,7 +1,7 @@
 var R = require('ramda')
-var Person = require('./person.js')
-var Address = require('./Address.js')
-var ZipCode = require('./ZipCode.js')
+var Person = require('../person.js')
+var Address = require('../Address.js')
+var ZipCode = require('../ZipCode.js')
 
 var person = new Person('Alonzo', 'Church', '444-44-4444')
 const lastnameLens = R.lensProp('lastname')
