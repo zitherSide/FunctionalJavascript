@@ -1,0 +1,21 @@
+var Node = require('../Node')
+var Tree = require('../Tree')
+var _ = require('lodash')
+var Person = require('../person')
+
+const church = new Node(new Person('Alonzo', 'Church', '111-11-1111'))
+const turing = new Node(new Person('Alan', 'Turing', '222-22-2222', 'Princeton'))
+const kleene = new Node(new Person('Stephan', 'Kleene', '444-44-4444', 'Princeton'))
+const rosser = new Node(new Person('Rosser', '', '555-55-5555', 'Princeton'))
+const nelson = new Node(new Person('Nelson', '', '555-55-5555', 'Princeton'))
+const constable = new Node(new Person('Constable', '', '555-55-5555', 'Princeton'))
+const mendelson = new Node(new Person('Mendelson', '', '555-55-5555', 'Princeton'))
+const sacks = new Node(new Person('Sacks', '', '555-55-5555', 'Princeton'))
+const gandy = new Node(new Person('Gandy', '', '555-55-5555', 'Princeton'))
+
+church.append(rosser).append(turing).append(kleene)
+kleene.append(nelson).append(constable)
+rosser.append(mendelson).append(sacks)
+turing.append(gandy)
+
+Tree.map(church, p => p.fullname)

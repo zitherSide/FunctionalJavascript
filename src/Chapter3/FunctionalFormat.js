@@ -11,6 +11,6 @@ const formattedNames =
     .uniq()
     .map(_.startCase)
     .sort()
-    .value()
 
-console.log(JSON.stringify(formattedNames))
+console.log(JSON.stringify(formattedNames.value()))
+
