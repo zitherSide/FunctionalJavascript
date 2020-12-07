@@ -16,7 +16,7 @@ module.exports = class Node{
         return this._children.length > 0
     }
     get value(){
-        return this._value
+        return this._val
     }
     set value(val){
         this._val = val

@@ -18,4 +18,5 @@ kleene.append(nelson).append(constable)
 rosser.append(mendelson).append(sacks)
 turing.append(gandy)
 
-Tree.map(church, p => p.fullname)
+const tree = Tree.map(church, p => p.fullname)
+Tree.map(tree._root, n => {console.log(n)})
