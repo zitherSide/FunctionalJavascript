@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.27.1/ramda.min.js"></script>
+    <script src="../stritti-log4js-e77b8a4/log4js/src/main/js/log4js.js" type="text/javascript"></script>
+    <title>Document</title>
+</head>
+<body>
+<div>
+    <h1>Dummy</h1>
+</div>    
+</body>
+</html>
+
+
+<script>
+    
+const logger = function(appender, layout, name, level, message){
+    const appenders = {
+        //'alert': new log4js.JSAlertAppender(),
+        'console': Log4js.BrowserConsoleAppender
+    }
+    const layouts = {
+        'basic': Log4js.BasicLayout,
+        'json': Log4js.JSONLayout,
+        'xml': Log4js.XMLLayout
+    }
+    const appenderr = appenders[appender]
+    //appenderr.setLayout(layouts[layout])
+    //const logger = Log4js.getLogger(name)
+    const logger = Log4js.getDefaultLogger()
+    logger.addAppender(appenderr)
+
+    logger.log(level, message, null)
+}
+
+const log = R.curry(logger)('console', 'basic', 'FJS')
+log('ERROR', 'Error condition detected')
+
+</script>
