@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.27.1/ramda.min.js"></script>
+</head>
+<body>
+    <h1 id='title'>Title</h1>
+    <p id='paragraph'>
+        <span class='content'>Something to read.</span>
+    </p>
+</body>
+</html>
+
+<script>
+    const read = (document, selector) => document.querySelector(selector).innerHTML
+    const write = (document, selector, val) => {
+        document.querySelector(selector).innerHTML = val
+        return val
+    }
+
+    console.log(read(window.document, '#title'))
+    console.log(read(window.document, '#paragraph'))
+    write(window.document, '.content', 'hoge')
+</script>
