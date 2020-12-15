@@ -5,23 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.27.1/ramda.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 </head>
 <body>
     <h1 id='title'>Title</h1>
     <p id='paragraph'>
         <span class='content'>Something to read.</span>
     </p>
+    <div id="student-name">alonzo church</div>
 </body>
 </html>
 
-<script>
-    const read = (document, selector) => document.querySelector(selector).innerHTML
-    const write = (document, selector, val) => {
-        document.querySelector(selector).innerHTML = val
-        return val
+<script src="../IO_client.js"></script>
+<script type='module'>
+    // const read = (document, selector) => document.querySelector(selector).innerHTML
+    // const write = (document, selector, val) => {
+    //     document.querySelector(selector).innerHTML = val
+    //     return val
+    // }
+
+    //console.log(read(window.document, '#title'))
+    //console.log(read(window.document, '#paragraph'))
+    //write(window.document, '.content', 'hoge')
+
+    const read = (document, selector) => () => document.querySelector(selector).innerHTML
+    const write = (document,selector) => {
+        return (val) => {
+            document.querySelector(selector).innerHTML = val
+            return val
+        }
     }
 
-    console.log(read(window.document, '#title'))
-    console.log(read(window.document, '#paragraph'))
-    write(window.document, '.content', 'hoge')
+    const readDom = _.partial(read, window.document)
+    const writeDom = _.partial(write, window.document)
+
+    const changeToStartCase = 
+        IO.from(readDom('#student-name'))
+        .map(_.startCase)
+        .map(writeDom('#student-name'))
+
+    changeToStartCase.run()
+
 </script>
