@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.22.0.css">
+    <script src="http://code.jquery.com/qunit/qunit-1.22.0.js"></script>
+</head>
+<body>
+    <h1 id="qunit-header">QUnit Test Suite</h1>    
+    <h2 id="qunit-banner"></h2>
+    <div id="qunit-testrunner-toolbar"></div>
+    <h2 id="qunit-serAgent"></h2>
+    <ol id="qunit-tests"></ol>
+    <script>
+        var counter = 0
+        function increment(){
+            return ++counter
+        }
+
+        QUnit.test("Increment with zero", function(assert){
+            assert.equal(increment(), 1)
+        })
+
+        //Fails because of the global condition "counter"
+        QUnit.test("Increment with zero", function(assert){
+            assert.equal(increment(), 1)
+        })
+    </script>
+</body>
+</html>

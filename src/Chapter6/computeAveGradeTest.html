@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.22.0.css">
+    <script src="http://code.jquery.com/qunit/qunit-1.22.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.27.1/ramda.min.js"></script>
+</head>
+<body>
+    <h1 id="qunit-header">QUnit Test Suite</h1>    
+    <h2 id="qunit-banner"></h2>
+    <div id="qunit-testrunner-toolbar"></div>
+    <h2 id="qunit-serAgent"></h2>
+    <ol id="qunit-tests"></ol>
+
+    <script>
+        const fork = (join, func1, func2) =>
+            (val) => join(func1(val), func2(val))
+
+        const toLetterGrade = (grade) => {
+            if(grade >= 90) return 'A'
+            if(grade >= 80) return 'B'
+            if(grade >= 70) return 'C'
+            if(grade >= 60) return 'D'
+            return 'F'
+        }
+
+        const computeAverageGrade = R.compose(toLetterGrade, fork(R.divide, R.sum, R.length))
+        QUnit.test('Compute Average Grade', function(assert){
+            assert.equal(computeAverageGrade([80, 90, 100]), 'A')
+        })
+
+        QUnit.test('COmpute Average Grade: toLetterGrade', function(assert){
+            assert.equal(toLetterGrade(90), 'A')
+            assert.equal(toLetterGrade(200), 'A')
+            assert.equal(toLetterGrade(80), 'B')
+            assert.equal(toLetterGrade(89), 'B')
+            assert.equal(toLetterGrade(70), 'C')
+            assert.equal(toLetterGrade(60), 'D')
+            assert.equal(toLetterGrade(59), 'F')
+            assert.equal(toLetterGrade(-10), 'F')
+        })
+
+        QUnit.test('Function Combinator: fork', function(assert){
+            const timesTwo = fork((x) => x + x, R.identity, R.identity)
+            assert.equal(timesTwo(1), 2)
+            assert.equal(timesTwo(2), 4)
+        })
+    </script>
+    
+</body>
+</html>
