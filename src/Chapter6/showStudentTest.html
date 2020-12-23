@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.22.0.css">
     <script src="http://code.jquery.com/qunit/qunit-1.22.0.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.27.1/ramda.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sinon.js/9.2.2/sinon.min.js" integrity="sha512-C/SmkI4cxIR+OcO6jLFNYCt5S0Ip65AIHSbHciL43kAvEHtC661Hy+UNA3UBTcnChKulohMVvMrJNpBlvv0ziw==" crossorigin="anonymous"></script>
     <script src="../IO_client.js"></script>
     <script src="../Either_client.js"></script>
 </head>
@@ -18,7 +19,8 @@
     <ol id="qunit-tests"></ol>
 
     <script>
-        const debug = R.tap(console.log)
+        //const debug = R.tap(console.log)
+        const debug = R.tap(()=>{})
         const trim = str => str.replace(/^\s*|\s*$/g, '')
         const normalize = str => str.replace(/\-/g, '')
         const cleanInput = R.pipe(trim, debug, normalize, debug)
@@ -51,6 +53,40 @@
             assert.equal(csv(['Alonzo', 'Church']), 'Alonzo,Church')
             assert.equal(csv(['Alonzo', '', 'Church']), 'Alonzo,,Church')
         })
+
+        const DB = val => ['test']
+        var studentStore, mockContext
+
+        QUnit.module('CH06',
+        {
+            beforEach: function(){
+                const studentStore = DB('student')
+                const mockContext = sinon.mock(studentStore)
+            },
+            afterEach: function(){
+                mockContext.verify()
+                mockContext.restore()
+            }
+        })
+
+        QUnit.test('showStudent: findStudent returning null',
+            function(assert){
+                mockContext.expects('get').once.returns(null)
+                const findStudent = safefetchRecord(studentStore)
+                assert.ok(findStudent('xxx-xx-xxxx').isLeft)
+            }
+        )
+
+        QUnit.test('showStudent: findStudent returning valid object',
+            function(assert){
+                mockContext.expects('find').once().returns(
+                    new Student('Alonzo', 'Church', 'Princeton').setSsn('444-44-444')
+                )
+
+                const findStudent = safefetchRecord(studentStore)
+                assert.ok(findStudent('444-44-4444').isRight)
+            }
+        )
 
         // const showStudent = R.compose(
         //     map(append('#student-info')),
