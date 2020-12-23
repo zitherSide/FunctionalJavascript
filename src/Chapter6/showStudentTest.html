@@ -57,6 +57,12 @@
         const DB = val => ['test']
         var studentStore, mockContext
 
+        const lift = R.curry( (val, func) => Either.fromNullable(val).map(func) )
+        const safefetchRecord = R.compose(
+            chain(checkLengthSsn),
+            lift(cleanInput),
+        )
+
         QUnit.module('CH06',
         {
             beforEach: function(){
