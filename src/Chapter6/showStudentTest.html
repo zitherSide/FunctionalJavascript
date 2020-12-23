@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.22.0.css">
+    <script src="http://code.jquery.com/qunit/qunit-1.22.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.27.1/ramda.min.js"></script>
+    <script src="../IO_client.js"></script>
+    <script src="../Either_client.js"></script>
+</head>
+<body>
+    <h1 id="qunit-header">QUnit Test Suite</h1>    
+    <h2 id="qunit-banner"></h2>
+    <div id="qunit-testrunner-toolbar"></div>
+    <h2 id="qunit-serAgent"></h2>
+    <ol id="qunit-tests"></ol>
+
+    <script>
+        const debug = R.tap(console.log)
+        const trim = str => str.replace(/^\s*|\s*$/g, '')
+        const normalize = str => str.replace(/\-/g, '')
+        const cleanInput = R.pipe(trim, debug, normalize, debug)
+
+        const validLength = (param, str) => str.length === param
+        const checkLengthSsn = (ssn) => validLength(9, ssn) ?  Either.right(ssn) : Either.left('Invalid SSN')
+
+        const csv = arr =>  arr.reduce( (accumulator, current) => accumulator + "," + current)
+
+        QUnit.test('showStudnet: cleanInput', function(assert){
+            const Input = [",", "-44-44-", "44444", "4", "4-4"]
+            const assertions = [",", "4444", "44444", "4", "44"]
+
+            expect(Input.length)
+            Input.forEach( (val, key) => {
+                assert.equal(cleanInput(val), assertions[key])
+            })
+        })
+
+        QUnit.test('showStudent: checkLengthSsn', function(assert){
+            assert.ok(checkLengthSsn("444444444").isRight)
+            assert.ok(checkLengthSsn("").isLeft)
+            assert.ok(checkLengthSsn("44444444").isLeft)
+            assert.ok(checkLengthSsn("444444444").chain(R.length), 9)
+        })
+
+        QUnit.test('showStudent: csv', function(assert){
+            assert.equal(csv(['']), '')
+            assert.equal(csv(['Alonzo']), 'Alonzo')
+            assert.equal(csv(['Alonzo', 'Church']), 'Alonzo,Church')
+            assert.equal(csv(['Alonzo', '', 'Church']), 'Alonzo,,Church')
+        })
+
+        // const showStudent = R.compose(
+        //     map(append('#student-info')),
+        //     liftIO,
+        //     getOrElse('unable to find student'),
+        //     map(csv),
+        //     map(R.props(['ssn', 'firstname', 'lastname'])),
+        //     chain(findStudent),
+        //     chain(checkLengthSsn),
+        //     lift(cleanInput)
+        // )
+    </script>
+</body>
+</html>
