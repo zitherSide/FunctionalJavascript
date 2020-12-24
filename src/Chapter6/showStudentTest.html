@@ -54,20 +54,20 @@
             assert.equal(csv(['Alonzo', '', 'Church']), 'Alonzo,,Church')
         })
 
-        const DB = val => ['test']
-        var studentStore, mockContext
+        const DB = val => { return{
+            arr: ['test', '444444444'],
+            find: (val) => arr.find( elem => elem === val)
+        }}
+        var studentStore = DB('student'), mockContext=sinon.mock(studentStore)
 
         const lift = R.curry( (val, func) => Either.fromNullable(val).map(func) )
-        const safefetchRecord = R.compose(
-            chain(checkLengthSsn),
-            lift(cleanInput),
-        )
+        const safefetchRecord = R.curry( (db, val) => Either.fromNullable(db.find(cleanInput(val))))
 
         QUnit.module('CH06',
         {
             beforEach: function(){
-                const studentStore = DB('student')
-                const mockContext = sinon.mock(studentStore)
+                studentStore = DB('student')
+                mockContext = sinon.mock(studentStore)
             },
             afterEach: function(){
                 mockContext.verify()
@@ -77,7 +77,7 @@
 
         QUnit.test('showStudent: findStudent returning null',
             function(assert){
-                mockContext.expects('get').once.returns(null)
+                mockContext.expects('find').once().returns(null)
                 const findStudent = safefetchRecord(studentStore)
                 assert.ok(findStudent('xxx-xx-xxxx').isLeft)
             }
@@ -86,7 +86,7 @@
         QUnit.test('showStudent: findStudent returning valid object',
             function(assert){
                 mockContext.expects('find').once().returns(
-                    new Student('Alonzo', 'Church', 'Princeton').setSsn('444-44-444')
+                    //new Student('Alonzo', 'Church', 'Princeton').setSsn('444-44-444')
                 )
 
                 const findStudent = safefetchRecord(studentStore)

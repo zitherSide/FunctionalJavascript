@@ -69,4 +69,16 @@
 
     const map = R.curry((f, container) => container.map(f))
     const chain = R.curry((f, container) => container.chain(f))
+    const showStudent = R.compose(
+        R.tap(trace('Student added to HTML page')),
+        map(append('#student-info')),
+        R.tap(trace('Student info converted to CSV')),
+        map(csv),
+        map(R.props(['ssn', 'filename', 'lastname'])),
+        R.tap(trace('Record fetched successfully')),
+        chain(findStudent),
+        R.tap(trace('Input was valid')),
+        chain(checkLengthSsn),
+        lift(cleanInput)
+    )
 </script>

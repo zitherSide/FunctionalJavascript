@@ -1,6 +1,6 @@
 var Person = require('./person')
 
-module.exports =class Student extends Person{
+module.exports = class Student extends Person{
     constructor(firstname, lastname, ssn, school){
         super(firstname, lastname, ssn)
         this._school = school
